@@ -151,7 +151,7 @@
                     </a>
                 </li>
                 <li class="menu-item active">
-                    <a class="menu-link">
+                    <a href="/edit/groups" class="menu-link">
                         <i class='menu-icon tf-icons bx bxs-network-chart'></i>
                         <div data-i18n="Analytics">{% trans "Ssenariy" %}</div>
                     </a>
@@ -399,54 +399,6 @@
                         <div data-i18n="Boxicons">Boxicons</div>
                     </a>
                 </li>
-
-                <!-- Forms & Tables -->
-                <li class="menu-header small text-uppercase"><span class="menu-header-text">Forms &amp; Tables</span>
-                </li>
-                <!-- Forms -->
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons bx bx-detail"></i>
-                        <div data-i18n="Form Elements">Form Elements</div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="forms-basic-inputs.html" class="menu-link">
-                                <div data-i18n="Basic Inputs">Basic Inputs</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="forms-input-groups.html" class="menu-link">
-                                <div data-i18n="Input groups">Input groups</div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons bx bx-detail"></i>
-                        <div data-i18n="Form Layouts">Form Layouts</div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="form-layouts-vertical.html" class="menu-link">
-                                <div data-i18n="Vertical Form">Vertical Form</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="form-layouts-horizontal.html" class="menu-link">
-                                <div data-i18n="Horizontal Form">Horizontal Form</div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- Tables -->
-                <li class="menu-item">
-                    <a href="tables-basic.html" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-table"></i>
-                        <div data-i18n="Tables">Tables</div>
-                    </a>
-                </li>
                 <!-- Misc -->
                 <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
                 <li class="menu-item">
@@ -599,21 +551,38 @@
                                             <label>{% trans "Javob" %}:</label>
                                             <div class="read-only-textbox">{{ script.answer }}</div>
                                             <button class="button" style="cursor: pointer;"
-                                                    onclick="openAddPopup({{ script.id }})">+
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modalAdd{{ script.id }}">+
                                             </button>
-                                            <div id="popupmenu{{ script.id }}" class="popmenu">
-                                                <input type="checkbox" href="#" class="popmenu-open" name="menu-open"
-                                                       id="menu-open{{ script.id }}">
-                                                <label class="popmenu-open-button" for="menu-open{{ script.id }}">
-                                                    <i class='bx bx-dots-vertical-rounded'></i>
-                                                </label>
-                                                <div data-bs-toggle="modal"
-                                                     data-bs-target="#modalCenter{{ script.id }}"
-                                                     class="popmenu-item item-1">
-                                                    <i class="fa-solid fa-pen-to-square"></i></div>
+                                            <div class="dropdown popmenu">
+                                                <button class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                    <i style="color: white;" class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                       data-bs-toggle="modal"
+                                                     data-bs-target="#modalEdit{{ script.id }}">
+                                                        <i class="bx bx-edit-alt me-1"></i> Tahrirlash</a
+                                                    >
+                                                    <a class="dropdown-item" href="/edit/delgroup/{{ group.id }}"
+                                                    ><i class="bx bx-trash me-1"></i> O'chirish</a
+                                                    >
+                                                </div>
                                             </div>
+{#                                            <div id="popupmenu{{ script.id }}" class="popmenu">#}
+{#                                                <input type="checkbox" href="#" class="popmenu-open" name="menu-open"#}
+{#                                                       id="menu-open{{ script.id }}">#}
+{#                                                <label class="popmenu-open-button" for="menu-open{{ script.id }}">#}
+{#                                                    <i class='bx bx-dots-vertical-rounded'></i>#}
+{#                                                </label>#}
+{#                                                <div data-bs-toggle="modal"#}
+{#                                                     data-bs-target="#modalEdit{{ script.id }}"#}
+{#                                                     class="popmenu-item item-1">#}
+{#                                                    <i class="fa-solid fa-pen-to-square"></i></div>#}
+{#                                            </div>#}
                                         </div>
-                                        <div class="modal fade" id="modalCenter{{ script.id }}" tabindex="-1"
+                                        <div class="modal fade" id="modalEdit{{ script.id }}" tabindex="-1"
                                              aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
@@ -697,26 +666,85 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="popupE{{ script.id }}" class="popupA" style="display: none;">
-                                            <form method="post">{% csrf_token %}
-                                                <input type="hidden" name="forma" value="f2">
-                                                <input type="hidden" name="parent_id" value="{{ script.id }}">
-                                                <label>{% trans "Savol 🇺🇿" %}:</label>
-                                                <input type="text" name="question_uz" required>
-                                                <label for="question_ru">{% trans "Savol 🇷🇺" %}:</label>
-                                                <input type="text" id="question_ru" name="question_ru" required
-                                                       oninput="validateRussian(this)">
-                                                <p id="error_message" style="color: red;"></p>
-                                                <label>{% trans "Javob 🇺🇿" %}:</label>
-                                                <input type="text" name="answer_uz" required>
-                                                <label>{% trans "Javob 🇷🇺" %}:</label>
-                                                <input type="text" name="answer_ru" required>
-                                                <br>
-                                                <button type="submit">{% trans "Yaratish" %}</button>
-                                                <button type="button" onclick="closePopupE({{ script.id }})">
-                                                    {% trans "Bekor qilish" %}
-                                                </button>
-                                            </form>
+                                        <div class="modal fade" id="modalAdd{{ script.id }}" tabindex="-1"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <form method="post">{% csrf_token %}
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalCenterTitle">
+                                                                Yangi yaratish</h5>
+                                                            <button
+                                                                    type="button"
+                                                                    class="btn-close"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="Close"
+                                                            ></button>
+                                                        </div>
+                                                        <input type="hidden" name="forma" value="f2">
+                                                        <input type="hidden" name="parent_id" value="{{ script.id }}">
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col mb-3">
+                                                                    <label for="nameWithTitle"
+                                                                           class="form-label">{% trans "Savol 🇺🇿" %}:</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            id="nameWithTitle"
+                                                                            class="form-control"
+                                                                            name="question_uz"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col mb-3">
+                                                                    <label for="nameWithTitle"
+                                                                           class="form-label">{% trans "Savol 🇷🇺" %}:</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            id="nameWithTitle"
+                                                                            class="form-control"
+                                                                            name="question_ru"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col mb-3">
+                                                                    <label for="nameWithTitle"
+                                                                           class="form-label">{% trans "Javob 🇺🇿" %}:</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            id="nameWithTitle"
+                                                                            class="form-control"
+                                                                            name="answer_uz"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col mb-3">
+                                                                    <label for="nameWithTitle"
+                                                                           class="form-label">{% trans "Javob 🇷🇺" %}:</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            id="nameWithTitle"
+                                                                            class="form-control"
+                                                                            name="answer_ru"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                {% trans "Bekor qilish" %}
+                                                            </button>
+                                                            <button type="submit"
+                                                                    class="btn btn-primary">{% trans "O'zgartish" %}
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
                                         {% if script.child_nodes.all %}
                                             {% include 'recursive_tree.html' with nodes=script.child_nodes.all %}

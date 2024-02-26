@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -15,10 +16,17 @@ class NodeGroupView(View):
 
     def post(self, request):
         if request.user.is_authenticated:
-            folder = NodeGroups.objects.create(
-                title=request.POST.get('title').title(),
-                user_id=request.user
-            )
+            if request.POST.get('action') == 'new':
+                group = NodeGroups.objects.create(
+                    title=request.POST.get('title').title(),
+                    status="Yangi",
+                    user_id=request.user
+                )
+            elif request.POST.get('action') == 'alter':
+                group = NodeGroups.objects.get(id=request.POST.get('groid'))
+                group.title = request.POST.get('title').title()
+                group.status = request.POST.get('status')
+                group.save()
             return redirect('folders')
         return redirect('login')
 
@@ -29,6 +37,7 @@ class TreeNode(View):
             folder = NodeGroups.objects.get(id=pk)
             context = {
                 "user": request.user,
+                "folder": folder,
                 "scripts": Script.objects.filter(folder_id=folder)
             }
             return render(request, 'tree_node.html', context)
@@ -71,6 +80,9 @@ class DefaultAdd(View):
                     answer_ru="Привет",
                     parent_id=None
                 )
+                folder.status = "Faol"
+                folder.save()
+
                 return redirect(f'/edit/groups/{pk}')
         return redirect('login')
 
